@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebProgramalamaProjem.Models;
 using System.Diagnostics;
-using WebProgramlamaProject.Models;
 
-namespace WebProgramlamaProject.Controllers
+namespace WebProgramalamaProjem.Controllers
 {
     public class HomeController : Controller
     {
@@ -18,6 +19,7 @@ namespace WebProgramlamaProject.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
