@@ -1,0 +1,8 @@
+﻿@model List<Singer>
+
+<div>Yazarlar Listeleniyor.</div>
+@foreach (var singer in Model)
+{
+    <h2>@singer.SingerName - @singer.SingerLName</h2>
+}
+<a asp-action="Create">Yeni Şarkıcı Oluştur</a>
