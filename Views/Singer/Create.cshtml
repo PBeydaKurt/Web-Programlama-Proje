@@ -1,15 +1,21 @@
 ﻿@model Singer
 
 <form asp-action="Create" method="post">
-    <div> 
+    <div>
         <label asp-for="SingerName"></label>
-        <input formaction="SingerName" />
+        <input asp-for="SingerName"></input>
     </div>
-    <div> 
+    <div>
         <label asp-for="SingerLName"></label>
-        <input formaction="SingerLName" />
+        <input asp-for="SingerLName"></input>
     </div>
-    <input type="submit" value="Kaydet"
-
+    <div>
+        <label asp-for="SingerNationality"></label>
+        <input asp-for="SingerNationality"></input>
+    </div>
+    <div>
+        <label asp-for="SingerAge"></label>
+        <input asp-for="SingerAge"></input>
+    </div>
+    <input type="submit" valur="Kaydet"></input>
 </form>
-

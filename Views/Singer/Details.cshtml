@@ -1,0 +1,42 @@
+﻿@model AlbumProject.Models.Singer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Subject</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SingerName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SingerName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SingerLName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SingerLName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SingerNationality)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SingerNationality)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SingerAge)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SingerAge)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.SingerId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

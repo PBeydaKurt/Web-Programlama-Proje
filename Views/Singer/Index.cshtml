@@ -1,8 +1,53 @@
-﻿@model List<Singer>
+﻿@model IEnumerable<AlbumProject.Models.Singer>
 
-<div>Yazarlar Listeleniyor.</div>
-@foreach (var singer in Model)
-{
-    <h2>@singer.SingerName - @singer.SingerLName</h2>
+@{
+    ViewData["Title"] = "Index";
 }
-<a asp-action="Create">Yeni Şarkıcı Oluştur</a>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SingerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SingerLName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SingerNationality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SingerAge)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SingerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SingerLName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SingerNationality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SingerAge)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.SingerId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.SingerId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
