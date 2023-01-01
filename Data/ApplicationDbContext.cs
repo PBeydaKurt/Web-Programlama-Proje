@@ -5,7 +5,7 @@ using System;
 
 namespace AlbumProject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<UserDetails>
     {
         public DbSet<Album> Albums { get; set; }
         public DbSet<Singer> Singers { get; set; }
