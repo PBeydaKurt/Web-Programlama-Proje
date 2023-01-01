@@ -3,43 +3,45 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+<br />
+<br />
+<br />
 <h1>Create</h1>
 
-<h4>Kitap</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AlbumTitle" class="control-label">Assay Link</label>
+                <label asp-for="AlbumTitle" class="control-label">Album Title</label>
                 <input asp-for="AlbumTitle" class="form-control" />
                 <span asp-validation-for="AlbumTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AlbumSongCount" class="control-label">Assay Link</label>
+                <label asp-for="AlbumSongCount" class="control-label">Album Song Count</label>
                 <input asp-for="AlbumSongCount" class="form-control" />
                 <span asp-validation-for="AlbumSongCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AlbumGenre" class="control-label">Assay Link</label>
+                <label asp-for="AlbumGenre" class="control-label">Album Genre</label>
                 <input asp-for="AlbumGenre" class="form-control" />
                 <span asp-validation-for="AlbumGenre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AlbumScore" class="control-label">Assay Link</label>
+                <label asp-for="AlbumScore" class="control-label">Album Score</label>
                 <input asp-for="AlbumScore" class="form-control" />
                 <span asp-validation-for="AlbumScore" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AlbumYear" class="control-label">Assay Link</label>
+                <label asp-for="AlbumYear" class="control-label">Album Year</label>
                 <input asp-for="AlbumYear" class="form-control" />
                 <span asp-validation-for="AlbumYear" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SingerId" class="control-label">Subject Name</label>
-                <select asp-for="SingerId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+                <label asp-for="SingerId" class="control-label">Singer Id</label>
+                <select asp-for="SingerId" class="form-control" asp-items="ViewBag.SingerId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

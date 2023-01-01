@@ -1,21 +1,33 @@
 ﻿@model Singer
+<br />
+<br />
+<br/>
 
 <form asp-action="Create" method="post">
     <div>
-        <label asp-for="SingerName"></label>
-        <input asp-for="SingerName"></input>
+         
+        <label asp-for="SingerName" class="control-label">Singer Name</label>
+        <input asp-for="SingerName" class="form-control" />
+        <span asp-validation-for="SingerName" class="text-danger"></span>
+            
+        
     </div>
     <div>
-        <label asp-for="SingerLName"></label>
-        <input asp-for="SingerLName"></input>
+        <label asp-for="SingerLName" class="control-label">Singer Last Name</label>
+        <input asp-for="SingerLName" class="form-control" />
+        <span asp-validation-for="SingerLName" class="text-danger"></span>
+       
     </div>
     <div>
-        <label asp-for="SingerNationality"></label>
-        <input asp-for="SingerNationality"></input>
+        <label asp-for="SingerNationality" class="control-label">Singer Nationality</label>
+        <input asp-for="SingerNationality" class="form-control" />
+        <span asp-validation-for="SingerNationality" class="text-danger"></span>
+        
     </div>
     <div>
-        <label asp-for="SingerAge"></label>
-        <input asp-for="SingerAge"></input>
+        <label asp-for="SingerAge" class="control-label">Singer Age</label>
+        <input asp-for="SingerAge" class="form-control" />
+        <span asp-validation-for="SingerAge" class="text-danger"></span>
     </div>
     <input type="submit" valur="Kaydet"></input>
 </form>
