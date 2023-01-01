@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using AlbumProject.Models;
 using System;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlbumProject.Controllers
 {
@@ -16,12 +17,13 @@ namespace AlbumProject.Controllers
             _context = context;
         }
 
+        
         public IActionResult Index()
         {
             List<Album> a = _context.Albums.Include(aa => aa.Sing).ToList();
 
-            var assay = (from aa in _context.Albums where aa.Sing != null select aa).ToList();
-            return View(assay);
+            var album = (from aa in _context.Albums where aa.Sing != null select aa).ToList();
+            return View(album);
         }
         //public IActionResult Create()
         //{
@@ -29,36 +31,25 @@ namespace AlbumProject.Controllers
         //    return View();
         //}
         [HttpPost]
-        public IActionResult Create([Bind("AlbumId,AlbumTitle,AlbumSongCount,AlbumGenre,AlbumScore,AlbumYear,SingerId")] Album assay)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create([Bind("AlbumId,AlbumTitle,AlbumSongCount,AlbumGenre,AlbumScore,AlbumYear,SingerId")] Album album)
         {
-            _context.Add(assay);
+            _context.Add(album);
             _context.SaveChanges();
-            ViewData["SingerId"] = new SelectList(_context.Singers, "SingerId", "SingerName", assay.SingerId); 
+            ViewData["SingerId"] = new SelectList(_context.Singers, "SingerId", "SingerName", album.SingerId); 
             return RedirectToAction("Index");
         }
-        // GET: Kitap/Create
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
+
         {
             ViewData["SingerId"] = new SelectList(_context.Singers, "SingerId", "SingerName");
             return View();
         }
 
-        // POST: Kitap/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("AssayId,AssayTitle,SubjectId")] Assay assay)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(assay);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["SubjectId"] = new SelectList(_context.Subjects, "SubjectId", "SubjectName", assay.SubjectId);
-        //    return View(assay);
-        //}
+        
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Albums == null)
@@ -66,15 +57,16 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var assay = await _context.Albums
+            var album = await _context.Albums
                 .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (assay == null)
+            if (album == null)
             {
                 return NotFound();
             }
 
-            return View(assay);
+            return View(album);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Albums == null)
@@ -82,18 +74,19 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var assay = await _context.Albums.FindAsync(id);
-            if (assay == null)
+            var album = await _context.Albums.FindAsync(id);
+            if (album == null)
             {
                 return NotFound();
             }
-            return View(assay);
+            return View(album);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SingerId,SingerName,SingerLName,SingerNationality,SingerAge")] Album assay)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("SingerId,SingerName,SingerLName,SingerNationality,SingerAge")] Album album)
         {
-            if (id != assay.AlbumId)
+            if (id != album.AlbumId)
             {
                 return NotFound();
             }
@@ -102,12 +95,12 @@ namespace AlbumProject.Controllers
             {
                 try
                 {
-                    _context.Update(assay);
+                    _context.Update(album);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlbumExists(assay.AlbumId))
+                    if (!AlbumExists(album.AlbumId))
                     {
                         return NotFound();
                     }
@@ -118,12 +111,10 @@ namespace AlbumProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(assay);
+            return View(album);
         }
-        //**************
-
-
-        // GET: Subject1/Delete/5
+        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Albums == null)
@@ -131,29 +122,30 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var assay = await _context.Albums
+            var album = await _context.Albums
                 .FirstOrDefaultAsync(m => m.AlbumId == id);
-            if (assay == null)
+            if (album == null)
             {
                 return NotFound();
             }
 
-            return View(assay);
+            return View(album);
         }
 
-        // POST: Subject1/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Albums == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Assays'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Albums'is null.");
             }
-            var assay = await _context.Albums.FindAsync(id);
-            if (assay != null)
+            var album = await _context.Albums.FindAsync(id);
+            if (album != null)
             {
-                _context.Albums.Remove(assay);
+                _context.Albums.Remove(album);
             }
 
             await _context.SaveChangesAsync();
@@ -164,13 +156,6 @@ namespace AlbumProject.Controllers
         {
             return _context.Albums.Any(e => e.AlbumId == id);
         }
-        //public IActionResult Index()
-        //{
-        //    List<Assay> a = _context.Assays.Include(aa => aa.Subj).ToList();
-
-        //    return View(a);
-        //}
-        //
-        ///lütfen bu da düzgün çalıssin 
+        
     }
 }

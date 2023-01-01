@@ -184,6 +184,7 @@ using AlbumProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AlbumProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlbumProject.Controllers
 {
@@ -194,23 +195,27 @@ namespace AlbumProject.Controllers
         {
             _context = context;
         }
+        
         public IActionResult Index()
         {
             List<Singer> a = _context.Singers.ToList();
             return View(a);
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
 
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create([Bind("SingerName,SingerLName,SingerNationality,SingerAge")] Singer a)
         {
             _context.Add(a);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Singers == null)
@@ -218,15 +223,16 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var subject = await _context.Singers
+            var singer = await _context.Singers
                 .FirstOrDefaultAsync(m => m.SingerId == id);
-            if (subject == null)
+            if (singer == null)
             {
                 return NotFound();
             }
 
-            return View(subject);
+            return View(singer);
         }
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Singers == null)
@@ -234,18 +240,19 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var subject = await _context.Singers.FindAsync(id);
-            if (subject == null)
+            var singer = await _context.Singers.FindAsync(id);
+            if (singer == null)
             {
                 return NotFound();
             }
-            return View(subject);
+            return View(singer);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SingerId,SingerName,SingerLName,SingerNationality,SingerAge")] Singer subject)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("SingerId,SingerName,SingerLName,SingerNationality,SingerAge")] Singer singer)
         {
-            if (id != subject.SingerId)
+            if (id != singer.SingerId)
             {
                 return NotFound();
             }
@@ -254,12 +261,12 @@ namespace AlbumProject.Controllers
             {
                 try
                 {
-                    _context.Update(subject);
+                    _context.Update(singer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SubjectExists(subject.SingerId))
+                    if (!SingerExists(singer.SingerId))
                     {
                         return NotFound();
                     }
@@ -270,12 +277,12 @@ namespace AlbumProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(subject);
+            return View(singer);
         }
-        //**************
+       
 
 
-        // GET: Subject1/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Singers == null)
@@ -283,36 +290,36 @@ namespace AlbumProject.Controllers
                 return NotFound();
             }
 
-            var subject = await _context.Singers
+            var singer = await _context.Singers
                 .FirstOrDefaultAsync(m => m.SingerId == id);
-            if (subject == null)
+            if (singer == null)
             {
                 return NotFound();
             }
 
-            return View(subject);
+            return View(singer);
         }
 
-        // POST: Subject1/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Singers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Subjects'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Singers'is null.");
             }
-            var subject = await _context.Singers.FindAsync(id);
-            if (subject != null)
+            var singer = await _context.Singers.FindAsync(id);
+            if (singer != null)
             {
-                _context.Singers.Remove(subject);
+                _context.Singers.Remove(singer);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SubjectExists(int id)
+        private bool SingerExists(int id)
         {
             return _context.Singers.Any(e => e.SingerId == id);
         }
